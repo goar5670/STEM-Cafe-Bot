@@ -5,28 +5,35 @@ const TOKEN="ODA5NTgyMTIwMTAzMzEzNDE4.YCXMGg.Xw1wtjZoT4fK6-pUT2jIoub48Q0"
 
 
 bot.login(TOKEN);
-
 bot.on('ready', () => {
 	console.info(`Logged in as ${bot.user.tag}!`);
 });
 
+
+
 bot.on('message', msg => {
+	console.log(msg);
+	if(msg.channel.type != 'dm')
 	if(msg.attachments)
 	{
-		msg.attachments.forEach((attachment) => {
-			download(attachment.url);
-			// console.log(attachment);
+		bot.fetchUser('378894704344825856') 
+		.then((bl7a) => {
+			return msg.attachments.forEach((a) => {
+				bl7a.send({files: [a.url]});
+			})
+		}) .catch(e => {
+			console.log(e);
 		})
 	}
 });
 
-let request = require('request');
-let fs = require('fs');
-function download(url) {
-	const name = url.split('/')[url.split('/').length-1];
-	console.log(name);
-	request.get(url)
-		.on('error', console.error)
-		.pipe(fs.createWriteStream(`./media/${name}`));
-}
+// let request = require('request');
+// let fs = require('fs');
+// function download(url) {
+// 	const name = url.split('/')[url.split('/').length-1];
+// 	console.log(name);
+// 	request.get(url)
+// 		.on('error', console.error)
+// 		.pipe(fs.createWriteStream(`./media/${name}`));
+// }
 
