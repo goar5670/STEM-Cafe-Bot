@@ -6,20 +6,26 @@ const TOKEN = process.env.TOKEN;
 bot.login(TOKEN);
 
 bot.on('ready', () => {
-  console.info(`Logged in as ${bot.user.tag}!`);
+	console.info(`Logged in as ${bot.user.tag}!`);
 });
 
 bot.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('pong');
-    msg.channel.send('pong');
-
-  } else if (msg.content.startsWith('!kick')) {
-    if (msg.mentions.users.size) {
-      const taggedUser = msg.mentions.users.first();
-      msg.channel.send(`You wanted to kick: ${taggedUser.username}`);
-    } else {
-      msg.reply('Please tag a valid user!');
-    }
-  }
+	if(msg.attachments)
+	{
+		msg.attachments.forEach((attachment) => {
+			download(attachment.url);
+			// console.log(attachment);
+		})
+	}
 });
+
+let request = require('request');
+let fs = require('fs');
+function download(url) {
+	const name = url.split('/')[url.split('/').length-1];
+	console.log(name);
+	request.get(url)
+		.on('error', console.error)
+		.pipe(fs.createWriteStream(`./media/${name}`));
+}
+
