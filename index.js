@@ -12,7 +12,6 @@ bot.on('ready', () => {
 
 
 bot.on('message', msg => {
-	console.log(msg);
 	if(msg.channel.type != 'dm')
 	if(msg.attachments)
 	{
